@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% block meta %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+{% endblock meta %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light ">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-link active" aria-current="page" href="{% url 'wishlist:logout' %}">Logout</a>
+        </div>
+    </div>
+</nav>
+<h5>Nama: </h5>
+<p>Nyoo Steven</p>
+
+<table id="table" class="table table-hover">
+    <tr class="table-primary">
+        <th>Nama Barang</th>
+        <th>Harga Barang</th>
+        <th>Deskripsi</th>
+    </tr>
+    {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
+
+</table>
+
+<script>
+    const table = document.getElementById('table')
+    $(document).ready(() => {
+        $.get('/wishlist/json', (wishlists) => {
+            wishlists.forEach((wishlist) => {
+                $('#table').append(`
+                    <tr class="item-table-row">
+                        <th class="item-table-cell">${wishlist.fields.nama_barang}</th>
+                        <th class="item-table-cell">${wishlist.fields.harga_barang}</th>
+                        <th class="item-table-cell">${wishlist.fields.deskripsi}</th>
+                    </tr>
+                `)
+            })
+        })
+    })
+</script>
+<h5>Sesi terakhir login: {{ last_login }}</h5>
+<button><a href="{% url 'wishlist:logout' %}">Logout</a></button>
+
+{% endblock content %}
